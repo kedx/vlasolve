@@ -1,0 +1,49 @@
+The NDfield binary format is a generic format used to store N-dimensional binary arrays.
+
+For the particular case of Vlasolve, The output files are 3D files containing 'double' floating point data. The 3 dimensions correspond to X, V and J respectively (radial postion, radial velocity and angular momentum). Note that while X and V give the value of the distriubtion function at points whose coordinates are the vertices of the grid, the third dimension represent values of the distribution function integrated over small ranges of J (i.e int [J_k and J_k+1]).
+
+The values of X, V and J corresponding to grid node (i,j,k) are computed as:
+    X_i = exp(log(X0) + i* (log(Xmax)-log(X0))/(Ni-1) )
+    V_j = V0 + j*(Vmax-V0)/(Nj-1)
+    J_k = pow( sqrt(J0)+k*(sqrt(Jmax)-sqrt(J0))/(Nk-1) ,2);
+    
+where X0 and Xmax=X0+deltaX are the bouding box min and max coordinates along each axis, and i,j and k are integers in {0,..,Ni}, {0,..,Nj} and  {0,..,Nk} respectively. Note that Nk is equal to the number of values along the 3rd dimensions plus one !
+
+The binary file format is organized as follows :
+
+NDfield format:
+
+field       type         size   comment
+---------------------------------------
+dummy       int(4B)      1      for FORTRAN compatibility
+tag         char(1B)     16     identifies the file type. Value : "NDFIELD"
+dummy       int(4B)      1	
+dummy       int(4B)      1	
+ndims       int(4B)      1      number of dimensions of the embedding space
+dims        int(4B)      20     size of the grid in pixels along each dimension, or [ndims,nparticles] if data represents particle coordinates (i.e. fdims_index=1)
+fdims_index int(4B)      1      0 if data represents a regular grid, 1 if it represents coordinates of tracer particles
+datatype    int(4B)      1      type of data stored (see below)
+x0          double(8B)   20     origin of bounding box (first ndims val. are meaningfull)
+delta       double(8B)   20     size of bounding box (first ndims val. are meaningfull)
+dummy_ext   char(1B)     160    dummy data reserved for future extensions
+dummy       int(4B)      1	
+dummy       int(4B)      1	
+data        sizeof(type) N      data itself (N may be the number of pixels or ndism times the number of particles)
+dummy       int(4B)      1	
+
+with the possible 'datatypes' values being (64 bits system):
+
+type       size(B) numeric_type	code
+-------------------------------------
+ND_CHAR    1       integer      1 (=1<<0)
+ND_UCHAR   1       integer      2 (=1<<1)
+ND_SHORT   2       integer      4 (=1<<2)
+ND_USHORT  2       integer      8 (=1<<3)
+ND_INT     4       integer      16 (=1<<4)
+ND_UINT    4       integer      32 (=1<<5)
+ND_LONG    8       integer      64 (=1<<6)
+ND_ULONG   8       integer      128 (=1<<7)
+ND_FLOAT   4       float        256 (=1<<8)
+ND_DOUBLE  8       float        512 (=1<<9)
+
+n.b.: blocks are delimited by dummy variables indicating the size of the blocks for FORTRAN compatibility, but they are ignored in C.
