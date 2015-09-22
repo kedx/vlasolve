@@ -1,4 +1,6 @@
-Vlasove is a simple semi-lagrangian vlasov-poisson solver for spherically symetric 3D problems. It is parallelized with both OpenMP and MPI and implements in particular a 3rd order distributed (MPI) spline interpolation. For further information on the numerical method, see "manual/method.pdf" and an application is avaialable in this [scientific article](http://adsabs.harvard.edu/abs/2015MNRAS.450.3724C).
+Vlasove is a simple semi-lagrangian vlasov-poisson solver for spherically symetric 3D problems. It is parallelized with both OpenMP and MPI and implements in particular a 3rd order distributed (MPI) spline interpolation. 
+
+For further information on the numerical method, see `manual/method.pdf` and an application of the code is described in this [scientific article](http://adsabs.harvard.edu/abs/2015MNRAS.450.3724C).
 
 I) Installing
 -------------
