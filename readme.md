@@ -128,23 +128,23 @@ The binary file format is organized as follows :
 
 **NDfield format:**
 
-|field       |type         |size   |comment|
-|:-----------|:-----------:|:-----:|:------|
-|dummy       |int(4B)      |1      |for FORTRAN compatibility|
+|field       |type         |size   |comment                                    |
+|:-----------|:-----------:|:-----:|:------------------------------------------|
+|dummy       |int(4B)      |1      |for FORTRAN compatibility                  |
 |tag         |char(1B)     |16     |identifies the file type. Value : "NDFIELD"|
-|dummy       |int(4B)      |1	   | |
-|dummy       |int(4B)      |1	   | |
+|dummy       |int(4B)      |1	   |                                           |
+|dummy       |int(4B)      |1	   |                                           |
 |ndims       |int(4B)      |1      |number of dimensions of the embedding space|
 |dims        |int(4B)      |20     |size of the grid in pixels along each dimension, or [ndims,nparticles] if data represents particle coordinates (i.e. fdims_index=1)|
-|fdims_index |int(4B)      |1      |0 if data represents a regular grid, 1 if it represents coordinates of tracer particles|
-|datatype    |int(4B)      |1      |type of data stored (see below)
-|x0          |double(8B)   |20     |origin of bounding box (first ndims val. are meaningfull)
-|delta       |double(8B)   |20     |size of bounding box (first ndims val. are meaningfull)
-|dummy_ext   |char(1B)     |160    |dummy data reserved for future extensions
-|dummy       |int(4B)      |1	   | |
-|dummy       |int(4B)      |1	   | |
-|data        |sizeof(type) |N      |data itself (N may be the number of pixels or ndism times the number of particles)
-|dummy       |int(4B)      |1	   | |
+|fdims_index |int(4B)      |1      |0 if data represents a regular grid, 1 if it represents coordinates of tracer particles (always 0 in our case !)|
+|datatype    |int(4B)      |1      |type of data stored (see below)            |
+|x0          |double(8B)   |20     |origin of bounding box (first ndims val. are meaningfull)|
+|delta       |double(8B)   |20     |size of bounding box (first ndims val. are meaningfull)|
+|dummy_ext   |char(1B)     |160    |dummy data reserved for future extensions  |
+|dummy       |int(4B)      |1	   |                                           |
+|dummy       |int(4B)      |1	   |                                           |
+|data        |sizeof(type) |N      |data itself (A value for each pixel in out case !)
+|dummy       |int(4B)      |1	   |                                           |
 
 with the possible 'datatypes' values being (64 bits system):
 
